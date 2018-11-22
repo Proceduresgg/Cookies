@@ -21,6 +21,6 @@ public class IpCommand extends BaseCommand {
         }
 
         Player target = Bukkit.getPlayer(args[0]);
-        player.sendMessage(CoreConfiguration.serverColorBright+ target.getName() + "'s " + CoreConfiguration.serverColorDim + "ip is " + CoreConfiguration.serverColorBright + target.getAddress().toString());
+        player.sendMessage(CoreConfiguration.serverColorBright+ target.getName() + "'s " + CoreConfiguration.serverColorDim + "IP is " + CoreConfiguration.serverColorBright + target.getAddress().getHostString());
     }
 }
