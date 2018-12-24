@@ -9,11 +9,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class PearlFix implements Listener {
+public class PearlListener implements Listener {
 
     private final ImmutableSet<Material> blockedTypes;
 
-    public PearlFix() {
+    public PearlListener() {
         this.blockedTypes = Sets.immutableEnumSet(Material.THIN_GLASS,
                 Material.IRON_FENCE, Material.FENCE, Material.NETHER_FENCE,
                 Material.FENCE_GATE, Material.ACACIA_STAIRS, Material.BIRCH_WOOD_STAIRS, Material.BRICK_STAIRS,
