@@ -1,0 +1,4 @@
+name: CookiesPlugin
+author: Procedures
+version: 0.1
+main: us.rengo.cookies.CookiesPlugin
