@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.rengo.cookies.CookiesPlugin;
-import us.rengo.cookies.player.PlayerData;
+import us.rengo.cookies.player.PlayerProfile;
 import us.rengo.cookies.utils.Messages;
 import us.rengo.milk.MilkPlugin;
 
@@ -17,28 +17,28 @@ public class ReplyCommand extends BaseCommand {
     @CommandAlias("r|reply")
     @Syntax("<message>")
     public void onReply(Player player, String message) {
-        PlayerData playerData = this.plugin.getPlayerDataManager().getData(player);
-        Player target = Bukkit.getServer().getPlayer(playerData.getLatestMessanger());
+        PlayerProfile playerProfile = this.plugin.getPlayerDataManager().getData(player);
+        Player target = Bukkit.getServer().getPlayer(playerProfile.getRecent());
 
         if (target == null) {
             player.sendMessage(Messages.PLAYER_NOT_ONLINE.getMessage());
             return;
         }
 
-        PlayerData targetData = this.plugin.getPlayerDataManager().getData(target);
+        PlayerProfile targetData = this.plugin.getPlayerDataManager().getData(target);
 
         if (!targetData.isMessagesEnabled()) {
             player.sendMessage(ChatColor.DARK_AQUA + "The specified player does not have messages enabled.");
             return;
 
-        } else if (!playerData.isMessagesEnabled()) {
+        } else if (!playerProfile.isMessagesEnabled()) {
             player.sendMessage(ChatColor.DARK_AQUA + "You do not have messages enabled.");
             return;
         }
 
-        String toPlayer = playerData.getMessageColor() + "(To " +
+        String toPlayer = playerProfile.getMessageColor() + "(To " +
                 MilkPlugin.getInstance().getProfileManager().getProfile(target).getRank().getPrefix()
-                + target.getName() + playerData.getMessageColor() + ") " + playerData.getMessageColor();
+                + target.getName() + playerProfile.getMessageColor() + ") " + playerProfile.getMessageColor();
 
         String toTarget = targetData.getMessageColor() + "(From " +
                 MilkPlugin.getInstance().getProfileManager().getProfile(player).getRank().getPrefix()

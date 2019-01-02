@@ -16,16 +16,19 @@ import us.rengo.cookies.commands.player.ClearCommand;
 import us.rengo.cookies.commands.player.FlyCommand;
 import us.rengo.cookies.commands.player.GamemodeCommand;
 import us.rengo.cookies.commands.player.TimeCommand;
+import us.rengo.cookies.commands.punishment.BanCommand;
 import us.rengo.cookies.commands.staff.BroadcastCommand;
 import us.rengo.cookies.commands.staff.ClearChatCommand;
 import us.rengo.cookies.commands.staff.FilterCommand;
 import us.rengo.cookies.commands.staff.MuteChatCommand;
+import us.rengo.cookies.config.CoreConfiguration;
+import us.rengo.cookies.database.Mongo;
 import us.rengo.cookies.listeners.ChatListener;
 import us.rengo.cookies.listeners.PearlListener;
 import us.rengo.cookies.listeners.PlayerListener;
 import us.rengo.cookies.managers.FilterManager;
 import us.rengo.cookies.managers.PlayerDataManager;
-import us.rengo.cookies.player.PlayerData;
+import us.rengo.cookies.player.PlayerProfile;
 
 import java.util.Arrays;
 
@@ -35,12 +38,23 @@ import java.util.Arrays;
 @Getter
 public class CookiesPlugin extends JavaPlugin {
 
+    @Getter private static CookiesPlugin instance;
+
     @Setter private boolean chatEnabled = true;
 
-    private PlayerDataManager playerDataManager = new PlayerDataManager();
-    private FilterManager filterManager = new FilterManager();
+    private CoreConfiguration configuration;
+    private Mongo mongo;
+    private PlayerDataManager playerDataManager;
+    private FilterManager filterManager;
 
     public void onEnable() {
+        instance = this;
+
+        this.configuration = new CoreConfiguration();
+        this.mongo = new Mongo();
+        this.playerDataManager = new PlayerDataManager();
+        this.filterManager = new FilterManager();
+
         PaperCommandManager manager = new PaperCommandManager(this);
 
         this.registerListeners();
@@ -54,7 +68,7 @@ public class CookiesPlugin extends JavaPlugin {
                 new TimeCommand(), new BroadcastCommand(), new ClearChatCommand(),
                 new ToggleMessageCommand(), new PingCommand(), new ReplyCommand(),
                 new FilterCommand(), new ClearCommand(), new FlyCommand(),
-                new GamemodeCommand())
+                new GamemodeCommand(), new BanCommand())
                 .forEach(manager::registerCommand);
     }
 
@@ -65,7 +79,7 @@ public class CookiesPlugin extends JavaPlugin {
     private void registerConditions(PaperCommandManager manager) {
         manager.getCommandConditions().addCondition(OnlinePlayer.class, "messages-enabled", (c, exec, value) -> {
             if (value != null) {
-                PlayerData profile = this.playerDataManager.getData(value.getPlayer());
+                PlayerProfile profile = this.playerDataManager.getData(value.getPlayer());
 
                 if (!profile.isMessagesEnabled()) {
                     throw new ConditionFailedException(ChatColor.DARK_AQUA + value.getPlayer().getName() + ChatColor.BLUE + " does not have their messages enabled.");

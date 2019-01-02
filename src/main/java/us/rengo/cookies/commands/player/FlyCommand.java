@@ -6,10 +6,10 @@ import co.aikar.commands.contexts.OnlinePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-@CommandPermission("rengo.admin")
 public class FlyCommand extends BaseCommand {
 
     @CommandAlias("fly")
+    @CommandPermission("rengo.admin")
     public void onFly(Player player) {
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);
@@ -27,6 +27,7 @@ public class FlyCommand extends BaseCommand {
     @CommandAlias("fly")
     @Syntax("<player>")
     @CommandCompletion("@players")
+    @CommandPermission("rengo.admin")
     public void onFly(Player player, OnlinePlayer targetOnlinePlayer) {
         Player target = targetOnlinePlayer.getPlayer();
 

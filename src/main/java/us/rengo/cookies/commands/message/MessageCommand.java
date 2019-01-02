@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.*;
 import co.aikar.commands.contexts.OnlinePlayer;
 import org.bukkit.entity.Player;
 import us.rengo.cookies.CookiesPlugin;
-import us.rengo.cookies.player.PlayerData;
+import us.rengo.cookies.player.PlayerProfile;
 import us.rengo.milk.MilkPlugin;
 
 public class MessageCommand extends BaseCommand {
@@ -17,12 +17,12 @@ public class MessageCommand extends BaseCommand {
     @CommandCompletion("@players")
     public void onMessage(Player player, @Conditions("messages-enabled") OnlinePlayer targetOnlinePlayer, String message) {
         Player target = targetOnlinePlayer.getPlayer();
-        PlayerData targetData = this.plugin.getPlayerDataManager().getData(target);
-        PlayerData playerData = this.plugin.getPlayerDataManager().getData(player);
+        PlayerProfile targetData = this.plugin.getPlayerDataManager().getData(target);
+        PlayerProfile playerProfile = this.plugin.getPlayerDataManager().getData(player);
 
-        String toPlayer = playerData.getMessageColor() + "(To " +
+        String toPlayer = playerProfile.getMessageColor() + "(To " +
                 MilkPlugin.getInstance().getProfileManager().getProfile(target).getRank().getPrefix()
-                + target.getName() + playerData.getMessageColor() + ") " + playerData.getMessageColor();
+                + target.getName() + playerProfile.getMessageColor() + ") " + playerProfile.getMessageColor();
 
         String toTarget = targetData.getMessageColor() + "(From " +
                 MilkPlugin.getInstance().getProfileManager().getProfile(player).getRank().getPrefix()
@@ -31,7 +31,7 @@ public class MessageCommand extends BaseCommand {
         player.sendMessage(toPlayer + message);
         target.sendMessage(toTarget + message);
 
-        targetData.setLatestMessanger(player.getUniqueId());
-        playerData.setLatestMessanger(target.getUniqueId());
+        targetData.setRecent(player.getUniqueId());
+        playerProfile.setRecent(target.getUniqueId());
     }
 }

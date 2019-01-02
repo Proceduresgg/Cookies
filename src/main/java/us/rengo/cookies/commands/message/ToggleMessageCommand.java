@@ -6,7 +6,7 @@ import co.aikar.commands.annotation.Dependency;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.rengo.cookies.CookiesPlugin;
-import us.rengo.cookies.player.PlayerData;
+import us.rengo.cookies.player.PlayerProfile;
 
 public class ToggleMessageCommand extends BaseCommand {
 
@@ -14,9 +14,9 @@ public class ToggleMessageCommand extends BaseCommand {
 
     @CommandAlias("togglemessages|tpm")
     public void onDefault(Player player) {
-        PlayerData playerData = this.plugin.getPlayerDataManager().getData(player);
+        PlayerProfile playerProfile = this.plugin.getPlayerDataManager().getData(player);
 
-        playerData.setMessagesEnabled(!playerData.isMessagesEnabled());
-        player.sendMessage(ChatColor.DARK_AQUA+ "Your messages have been " + (playerData.isMessagesEnabled() ? "disabled" : "enabled") + ".");
+        playerProfile.setMessagesEnabled(!playerProfile.isMessagesEnabled());
+        player.sendMessage(ChatColor.DARK_AQUA+ "Your messages have been " + (playerProfile.isMessagesEnabled() ? "disabled" : "enabled") + ".");
     }
 }

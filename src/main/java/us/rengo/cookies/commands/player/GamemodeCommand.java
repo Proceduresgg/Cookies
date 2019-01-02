@@ -10,11 +10,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-@CommandPermission("rengo.build")
 public class GamemodeCommand extends BaseCommand {
 
     @CommandAlias("gm|gamemode")
     @Syntax("<gamemode>")
+    @CommandPermission("rengo.build")
     public void onGamemode(Player player, String gamemode) {
         switch (gamemode.toLowerCase()) {
             case "c":
@@ -36,6 +36,7 @@ public class GamemodeCommand extends BaseCommand {
     @CommandAlias("gm|gamemode")
     @Syntax("<player> <gamemode>")
     @CommandCompletion("@players")
+    @CommandPermission("rengo.build")
     public void onGamemode(Player player, OnlinePlayer targetOnlinePlayer, String gamemode) {
         Player target = targetOnlinePlayer.getPlayer();
 

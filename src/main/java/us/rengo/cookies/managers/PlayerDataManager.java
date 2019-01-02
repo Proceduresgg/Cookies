@@ -2,7 +2,7 @@ package us.rengo.cookies.managers;
 
 import lombok.Getter;
 import org.bukkit.entity.Player;
-import us.rengo.cookies.player.PlayerData;
+import us.rengo.cookies.player.PlayerProfile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,19 +10,19 @@ import java.util.UUID;
 
 public class PlayerDataManager {
 
-    @Getter private Map<UUID, PlayerData> playerDataMap = new HashMap<>();
+    @Getter private Map<UUID, PlayerProfile> playerDataMap = new HashMap<>();
 
-    public PlayerData getData(UUID uuid) {
-        PlayerData playerData = this.playerDataMap.get(uuid);
+    public PlayerProfile getData(UUID uuid) {
+        PlayerProfile playerProfile = this.playerDataMap.get(uuid);
 
-        if (playerData == null) {
-            playerData = this.playerDataMap.put(uuid, new PlayerData(uuid));
+        if (playerProfile == null) {
+            playerProfile = this.playerDataMap.put(uuid, new PlayerProfile(uuid));
         }
 
-        return playerData;
+        return playerProfile;
     }
 
-    public PlayerData getData(Player player) {
+    public PlayerProfile getData(Player player) {
         return this.getData(player.getUniqueId());
     }
 }
