@@ -36,11 +36,14 @@ public class BanCommand extends BaseCommand {
     @CommandCompletion("@players")
     @Syntax("<player> <reason>")
     public void onUnban(Player player, OfflinePlayer offlinePlayer, String reason) {
-        PlayerProfile profile = new PlayerProfile(offlinePlayer.getUniqueId());
+        new PlayerProfile(offlinePlayer.getUniqueId()).load().whenComplete(((profile, throwable) -> {
+            if (throwable != null) {
+                player.sendMessage(ChatColor.RED + "Error Retrieving Data");
+                throwable.printStackTrace();
 
-        if (profile.load()) {
-            if (!profile.isBanned()) {
+            } else if (!profile.isBanned()) {
                 player.sendMessage(ChatColor.RED + "That player is not banned.");
+
             } else {
                 profile.getPunishments()
                         .stream()
@@ -50,8 +53,6 @@ public class BanCommand extends BaseCommand {
                 player.sendMessage(ChatColor.YELLOW + "That player has been unbanned.");
                 profile.save();
             }
-        } else {
-            player.sendMessage(ChatColor.RED + "Error, report to Procedures.");
-        }
+        }));
     }
 }

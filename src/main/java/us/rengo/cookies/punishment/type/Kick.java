@@ -2,13 +2,12 @@ package us.rengo.cookies.punishment.type;
 
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
-import us.rengo.cookies.punishment.AbstractPunishment;
-import us.rengo.cookies.punishment.BanType;
+import us.rengo.cookies.punishment.Punishment;
 
 import java.util.UUID;
 
 @Getter
-public class Kick extends AbstractPunishment {
+public class Kick extends Punishment {
 
     private long endStamp;
 
@@ -25,10 +24,7 @@ public class Kick extends AbstractPunishment {
 
     @Override
     public boolean temporary() {
-        if (this.endStamp == Long.MAX_VALUE) {
-            return false;
-        }
-        return true;
+        return this.endStamp != Long.MAX_VALUE;
     }
 
     @Override

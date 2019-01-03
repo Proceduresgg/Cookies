@@ -11,15 +11,17 @@ import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 import us.rengo.cookies.CookiesPlugin;
-import us.rengo.cookies.punishment.AbstractPunishment;
+import us.rengo.cookies.punishment.Punishment;
 import us.rengo.cookies.punishment.type.Ban;
 import us.rengo.cookies.punishment.type.Mute;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
-@Getter @Setter
+@Getter
+@Setter
 @RequiredArgsConstructor
 public class PlayerProfile {
 
@@ -27,14 +29,14 @@ public class PlayerProfile {
 
     private UUID recent;
 
-    private final List<AbstractPunishment> punishments = new ArrayList<>();
+    private final List<Punishment> punishments = new ArrayList<>();
 
     private ChatColor messageColor = ChatColor.LIGHT_PURPLE;
 
     private boolean messagesEnabled = true;
 
     public boolean isBanned() {
-        for (AbstractPunishment punishment : this.punishments) {
+        for (Punishment punishment : this.punishments) {
             if (punishment instanceof Ban) {
                 Ban ban = (Ban) punishment;
 
@@ -46,7 +48,7 @@ public class PlayerProfile {
     }
 
     public boolean isMuted() {
-        for (AbstractPunishment punishment : this.punishments) {
+        for (Punishment punishment : this.punishments) {
             if (punishment instanceof Mute) {
                 Mute mute = (Mute) punishment;
 
@@ -75,26 +77,21 @@ public class PlayerProfile {
         CookiesPlugin.getInstance().getMongo().getDatabase().getCollection("profiles").replaceOne(Filters.eq("uuid", this.identifier.toString()), document, new ReplaceOptions().upsert(true));
     }
 
-    public boolean load() {
-        try {
+    public CompletableFuture<PlayerProfile> load() {
+        return CompletableFuture.supplyAsync(() -> {
             MongoCollection<Document> collection = CookiesPlugin.getInstance().getMongo().getDatabase().getCollection("profiles");
             Document document = collection.find(Filters.eq("uuid", this.identifier.toString())).first();
 
             if (document != null) {
                 JsonArray bans = new JsonParser().parse(document.getString("bans")).getAsJsonArray();
-
                 bans.forEach(banData -> this.punishments.add(Ban.deserializeBan(banData.getAsJsonObject())));
             }
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+            return PlayerProfile.this;
+        });
     }
 
     public Ban getActiveBan() {
-        for (AbstractPunishment punishment : this.punishments) {
+        for (Punishment punishment : this.punishments) {
             if (punishment instanceof Ban) {
                 if (punishment.isActive()) {
                     return (Ban) punishment;

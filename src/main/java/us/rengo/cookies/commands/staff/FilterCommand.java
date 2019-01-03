@@ -5,7 +5,6 @@ import co.aikar.commands.annotation.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.rengo.cookies.CookiesPlugin;
-import us.rengo.cookies.config.CoreConfiguration;
 
 @CommandAlias("filter")
 @CommandPermission("rengo.manager")

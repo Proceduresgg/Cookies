@@ -21,7 +21,7 @@ import us.rengo.cookies.commands.staff.BroadcastCommand;
 import us.rengo.cookies.commands.staff.ClearChatCommand;
 import us.rengo.cookies.commands.staff.FilterCommand;
 import us.rengo.cookies.commands.staff.MuteChatCommand;
-import us.rengo.cookies.config.CoreConfiguration;
+import us.rengo.cookies.config.Configuration;
 import us.rengo.cookies.database.Mongo;
 import us.rengo.cookies.listeners.ChatListener;
 import us.rengo.cookies.listeners.PearlListener;
@@ -42,7 +42,7 @@ public class CookiesPlugin extends JavaPlugin {
 
     @Setter private boolean chatEnabled = true;
 
-    private CoreConfiguration configuration;
+    private Configuration configuration;
     private Mongo mongo;
     private PlayerDataManager playerDataManager;
     private FilterManager filterManager;
@@ -50,7 +50,7 @@ public class CookiesPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        this.configuration = new CoreConfiguration();
+        this.configuration = new Configuration();
         this.mongo = new Mongo();
         this.playerDataManager = new PlayerDataManager();
         this.filterManager = new FilterManager();

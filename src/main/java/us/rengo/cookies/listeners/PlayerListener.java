@@ -13,26 +13,28 @@ import us.rengo.cookies.CookiesPlugin;
 import us.rengo.cookies.player.PlayerProfile;
 
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 
 @AllArgsConstructor
 public class PlayerListener implements Listener {
 
     private final CookiesPlugin plugin;
 
-    private static String[] PERMISSIONS = {"help", "plugins", "version", "me", "list", "say"};
+    private static final String[] PERMISSIONS = {"help", "plugins", "version", "me", "list", "say"};
 
     @EventHandler
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
-        PlayerProfile profile = new PlayerProfile(event.getUniqueId());
-
-        if (profile.load()) {
+        CompletableFuture<PlayerProfile> load = new PlayerProfile(event.getUniqueId()).load();
+        try {
+            PlayerProfile profile = load.get();
             if (profile.isBanned()) {
                 event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, profile.getActiveBan().getMessage());
             } else {
                 this.plugin.getPlayerDataManager().getPlayerDataMap().put(profile.getIdentifier(), profile);
             }
-        } else {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, ChatColor.RED + "Your player data did not load properly, please relog. \nIf this continues to happen, please join ts.rengo.us.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, ChatColor.RED + "Error Loading Data Try Again");
         }
     }
 
@@ -44,18 +46,18 @@ public class PlayerListener implements Listener {
 
         Arrays.stream(PERMISSIONS)
                 .forEach(permission -> player.addAttachment(this.plugin, "bukkit.command." + permission, false));
-
-        if (player.getName().equalsIgnoreCase("topu") || player.getName().equalsIgnoreCase("hydrize")) {
-            player.addAttachment(this.plugin, "minecraft.command.whitelist", true);
-        }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile data = this.plugin.getPlayerDataManager().getPlayerDataMap().remove(player.getUniqueId());
+        PlayerProfile data = this.plugin.getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId());
 
-        data.save();
+        if (data != null) {
+            data.save();
+        }
+
+        this.plugin.getPlayerDataManager().getPlayerDataMap().remove(player.getUniqueId());
     }
 
     @EventHandler

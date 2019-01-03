@@ -1,13 +1,12 @@
 package us.rengo.cookies.punishment;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
 
 @Getter @Setter
-public abstract class AbstractPunishment {
+public abstract class Punishment {
 
     private final UUID addedBy, who;
 
@@ -17,14 +16,14 @@ public abstract class AbstractPunishment {
 
     private String reason;
 
-    public AbstractPunishment(UUID addedBy, UUID who, long timeStamp, String reason) {
+    public Punishment(UUID addedBy, UUID who, long timeStamp, String reason) {
         this.reason = reason;
         this.addedBy = addedBy;
         this.who = who;
         this.timeStamp = timeStamp;
     }
 
-    public AbstractPunishment(UUID addedBy, UUID who, String reason) {
+    public Punishment(UUID addedBy, UUID who, String reason) {
         this(addedBy, who, System.currentTimeMillis(), reason);
     }
 

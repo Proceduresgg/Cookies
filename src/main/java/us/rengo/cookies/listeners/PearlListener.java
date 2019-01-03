@@ -32,8 +32,8 @@ public class PearlListener implements Listener {
                 return;
             }
 
-            to.setX(to.getBlockX() + 0.5D);
-            to.setZ(to.getBlockZ() + 0.5D);
+            to.setX(to.getBlockX() + 0.5);
+            to.setZ(to.getBlockZ() + 0.5);
             event.setTo(to);
         }
     }

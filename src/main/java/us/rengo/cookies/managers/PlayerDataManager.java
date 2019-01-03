@@ -12,17 +12,7 @@ public class PlayerDataManager {
 
     @Getter private Map<UUID, PlayerProfile> playerDataMap = new HashMap<>();
 
-    public PlayerProfile getData(UUID uuid) {
-        PlayerProfile playerProfile = this.playerDataMap.get(uuid);
-
-        if (playerProfile == null) {
-            playerProfile = this.playerDataMap.put(uuid, new PlayerProfile(uuid));
-        }
-
-        return playerProfile;
-    }
-
     public PlayerProfile getData(Player player) {
-        return this.getData(player.getUniqueId());
+        return this.playerDataMap.get(player.getUniqueId());
     }
 }

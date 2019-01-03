@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import java.util.regex.Pattern;
 
 @Getter
-public class CoreConfiguration {
+public class Configuration {
 
     public static ChatColor SERVER_COLOR_BRIGHT = ChatColor.DARK_AQUA;
     public static ChatColor SERVER_COLOR_DIM = ChatColor.GRAY;
@@ -15,7 +15,7 @@ public class CoreConfiguration {
 
     private FileConfig cookies = new FileConfig("cookies.yml");
 
-    public CoreConfiguration() {
+    public Configuration() {
         this.cookies.getConfig().options().copyDefaults(true);
     }
 }

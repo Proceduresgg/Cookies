@@ -1,10 +1,10 @@
 package us.rengo.cookies.punishment.type;
 
-import us.rengo.cookies.punishment.AbstractPunishment;
+import us.rengo.cookies.punishment.Punishment;
 
 import java.util.UUID;
 
-public class Mute extends AbstractPunishment {
+public class Mute extends Punishment {
 
     public Mute(UUID addedBy, UUID who) {
         super(addedBy, who, 49, "FJK");

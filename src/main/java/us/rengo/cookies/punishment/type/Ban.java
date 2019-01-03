@@ -3,14 +3,13 @@ package us.rengo.cookies.punishment.type;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
-import us.rengo.cookies.punishment.AbstractPunishment;
+import us.rengo.cookies.punishment.Punishment;
 import us.rengo.cookies.punishment.BanType;
 
 import java.util.UUID;
 
 @Getter
-public class Ban extends AbstractPunishment {
+public class Ban extends Punishment {
 
     private final BanType type;
 
@@ -47,7 +46,7 @@ public class Ban extends AbstractPunishment {
     @Override
     public String getMessage() {
         if (this.active()) {
-            return ChatColor.GOLD + "You are " + (this.temporary() ? "temporarily " : "permanently ") + "banned for " + ChatColor.DARK_RED + this.getReason() + ChatColor.GOLD + "." + ChatColor.YELLOW + "\nrengo.us/appeal";
+            return ChatColor.GOLD + "You are " + (this.temporary() ? "temporarily " : "permanently ") + "banned for " + ChatColor.DARK_RED + this.getReason() + ChatColor.GOLD + "." + ChatColor.YELLOW + "\n\nrengo.us/appeal";
         }
 
         return "";

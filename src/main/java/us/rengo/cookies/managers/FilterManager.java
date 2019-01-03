@@ -3,7 +3,7 @@ package us.rengo.cookies.managers;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import us.rengo.cookies.config.CoreConfiguration;
+import us.rengo.cookies.config.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class FilterManager {
 
     private boolean testRegex(String message) {
         try {
-            Matcher matcher = CoreConfiguration.URL_REGEX.matcher(message);
+            Matcher matcher = Configuration.URL_REGEX.matcher(message);
             return matcher.matches();
 
         } catch (RuntimeException exception) {
