@@ -50,14 +50,10 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
+
         Player player = event.getPlayer();
-        PlayerProfile data = this.plugin.getPlayerDataManager().getPlayerDataMap().get(player.getUniqueId());
-
-        if (data != null) {
-            data.save();
-        }
-
-        this.plugin.getPlayerDataManager().getPlayerDataMap().remove(player.getUniqueId());
+        this.plugin.getPlayerDataManager().getPlayerDataMap().remove(player.getUniqueId()).save();
     }
 
     @EventHandler
